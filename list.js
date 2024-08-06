@@ -92,12 +92,19 @@ function deleteItem(index) {
   updateList();
 }
 
+$(document).ready(function() {
+  $('#list-name').text(listName);
+  $('#list-name').on('click', renameList); // Bind renameList to #list-name
+  updateList();
+});
+
+
 // Function to rename the list
 function renameList() {
   const listNameSpan = $('#list-name');
   const listNameText = listNameSpan.text();
   listNameSpan.html(''); // Clear the existing text
-  const editInput = $('<input>').val(listNameText);
+  const editInput = $('<input type="text">').val(listNameText);
   listNameSpan.append(editInput);
   editInput.focus();
   
@@ -112,19 +119,19 @@ function renameList() {
   });
   
   editInput.on('blur', function() {
+    const newListName = $(this).val().trim();
+    listName = newListName;
     listNameSpan.text(listName);
     localStorage.setItem('listName', listName);
     $(this).remove();
   });
 }
 
-// Function to reset the list
 function resetList() {
 toDoList = [];
 updateList();
 localStorage.removeItem('toDoList');
 }
-
 
 // Function to move an item in the list
 function moveItem(oldIndex, newIndex) {
